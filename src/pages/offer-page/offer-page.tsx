@@ -335,3 +335,5 @@ function OfferPage():JSX.Element{
     </div>
   );
 }
+
+export default OfferPage;

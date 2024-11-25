@@ -1,5 +1,5 @@
 
-function MainPage():JSX.Element{
+function MainEmptyPage():JSX.Element{
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -84,3 +84,6 @@ function MainPage():JSX.Element{
     </div>
   );
 }
+
+
+export default MainEmptyPage;

@@ -169,3 +169,5 @@ function FavoritesPage():JSX.Element{
     </div>
   );
 }
+
+export default FavoritesPage;
