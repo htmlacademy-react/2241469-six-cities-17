@@ -8,19 +8,20 @@ import Page404 from '../../pages/page-404/page-404';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import PrivateRoute from '../private-route/private-route';
 import { AuthorizationStatus } from '../../data/authorization';
+import { Offer } from '../../data/types/offer';
 
 type AppScreenProps = {
-  cardCount: number;
+  offers: Offer[];
 }
 
-function App({cardCount}: AppScreenProps): JSX.Element {
+function App({offers}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
         <Route
           path ={PathRoutes.MAIN}
-          element = {<MainPage cardCount={cardCount} />}
+          element={<MainPage offers={offers} />}
         >
         </Route>
         <Route
@@ -32,9 +33,9 @@ function App({cardCount}: AppScreenProps): JSX.Element {
           path ={PathRoutes.FAVORITES}
           element = {
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
+              authorizationStatus={AuthorizationStatus.Auth}
             >
-              <FavoritesPage/>
+              <FavoritesPage offers={offers}/>
             </PrivateRoute>
           }
         >
