@@ -1,30 +1,32 @@
-type CityCardProps = {
-  imagePath: string;
-  priceValue: string;
-  priceText: string;
-  starsProcent: string;
-  cardName: string;
-  cardType: string;
+import { Offer } from '../../data/types/offer';
+
+type Props = {
+  offer: Offer ;
+  onHandleChangeActiveCard?: (id: string | null)=>void;
 }
 
 
-function CityCard(_CityCardProps:CityCardProps):JSX.Element{
+function CityCard({offer, onHandleChangeActiveCard}: Props):JSX.Element{
   return (
 
-    <article className="cities__card place-card">
+    <article className="cities__card place-card"
+      onMouseEnter={() => onHandleChangeActiveCard && onHandleChangeActiveCard(offer.id)}
+      onMouseLeave={() => onHandleChangeActiveCard && onHandleChangeActiveCard(null)}
+    >
+
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img className="place-card__image" src={_CityCardProps.imagePath} width="260" height="200" alt="Place image"/>
+          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>
         </a>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{_CityCardProps.priceValue}</b>
-            <span className="place-card__price-text">&#47;&nbsp;{_CityCardProps.priceText}</span>
+            <b className="place-card__price-value">&euro;{offer.price}</b>
+            <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
@@ -35,14 +37,14 @@ function CityCard(_CityCardProps:CityCardProps):JSX.Element{
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: _CityCardProps.starsProcent}}></span>
+            <span style={{width: offer.rating}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{_CityCardProps.cardName} </a>
+          <a href="#">{offer.title} </a>
         </h2>
-        <p className="place-card__type">{_CityCardProps.cardType}</p>
+        <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );
