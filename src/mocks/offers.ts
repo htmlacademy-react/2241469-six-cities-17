@@ -2,91 +2,91 @@ import { Offer } from '../data/types/offer';
 
 const OfferList:Offer[] = [
   {
-    id: '86ef72ae-69aa-4a99-8124-cbb2e460d6bc',
-    title: 'Nice, cozy, warm big bed apartment',
+    id:'cc168b80-2988-4234-a48e-2dc2fa2823cb',
+    title: 'The house among olive ',
     type: 'house',
-    price: 756,
-    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/18.jpg',
+    price: 115,
+    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/17.jpg',
     city: {
-      name: 'Paris',
+      name: 'Amsterdam',
       location: {
-        latitude: 48.85661,
-        longitude: 2.351499,
+        latitude: 52.37454,
+        longitude: 4.897976,
         zoom: 13
       }
     },
     location: {
-      latitude: 48.868610000000004,
-      longitude: 2.342499,
-      zoom: 16
-    },
-    isFavorite: false,
-    isPremium: true,
-    rating: 1.1
-  },
-  {
-    id: 'e49b9283-4cdc-4437-bade-b249a29ad933',
-    title: 'House in countryside',
-    type: 'apartment',
-    price: 456,
-    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg',
-    city: {
-      name: 'Paris',
-      location: {
-        latitude: 48.85661,
-        longitude: 2.351499,
-        zoom: 13
-      }
-    },
-    location: {
-      latitude: 48.858610000000006,
-      longitude: 2.330499,
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
       zoom: 16
     },
     isFavorite: false,
     isPremium: false,
-    rating: 3.6
+    rating: 3.2
   },
   {
-    id: '2ad908a4-09e9-48b4-bb86-9428f748011d',
-    title: 'Beautiful & luxurious apartment at great location',
-    type: 'room',
-    price: 292,
-    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg',
+    id:'805f426f-e11f-4961-b768-759d7e12f5e0',
+    title: 'Waterfront with extraordinary view',
+    type: 'apartment',
+    price: 457,
+    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/16.jpg',
     city: {
-      name: 'Paris',
+      name: 'Amsterdam',
       location: {
-        latitude: 48.85661,
-        longitude: 2.351499,
+        latitude: 52.37454,
+        longitude: 4.897976,
         zoom: 13
       }
     },
     location: {
-      latitude: 48.834610000000005,
-      longitude: 2.335499,
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
       zoom: 16
     },
     isFavorite: false,
     isPremium: false,
-    rating: 4.6
+    rating: 4.3
   },
   {
-    id: '0049e82e-b682-4eb8-b45b-3cc01e96a37a',
-    title: 'The Joshua Tree House',
+    id:'3e4b53a3-1668-402c-88fb-c3c3b69c34eb',
+    title: 'Amazing and Extremely Central Flat',
     type: 'apartment',
-    price: 467,
-    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/5.jpg',
+    price: 304,
+    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/19.jpg',
     city: {
-      name: 'Paris',
+      name: 'Amsterdam',
       location: {
-        latitude: 48.85661,
-        longitude: 2.351499,
+        latitude: 52.37454,
+        longitude: 4.897976,
         zoom: 13
       }
     },
     location: {
-      latitude: 48.85761,
-      longitude: 2.358499,
+      latitude: 52.3909553943508,
+      longitude: 44.929309666406198,
+      zoom: 16
+    },
+    isFavorite: false,
+    isPremium: false,
+    rating: 2.4
+  },
+  {
+    id:'65cfabd3-c168-4af5-b2e9-314e39828347',
+    title: 'Amazing and Extremely Central Flat',
+    type: 'house',
+    price: 515,
+    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/13.jpg',
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 13
+      }
+    },
+    location: {
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
       zoom: 16
     },
     isFavorite: false,

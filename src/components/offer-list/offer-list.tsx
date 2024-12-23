@@ -2,12 +2,12 @@ import { Offer } from '../../data/types/offer';
 import CityCard from '../city-card/city-card';
 
 
-type props = {
+type Props = {
     offers: Offer[];
     onHandleChangeActiveCard: (id: string | null)=>void;
   }
 
-function OfferCardsList({offers, onHandleChangeActiveCard}: props) : JSX.Element{
+function OfferCardsList({offers, onHandleChangeActiveCard}: Props) : JSX.Element{
   return(
     <div className="cities__places-list places__list tabs__content">
       {offers.map(
