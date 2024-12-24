@@ -1,32 +1,6 @@
-import CityCard from '../../components/city-card/city-card';
 import Header from '../../components/header/header';
 import { Offer } from '../../data/types/offer';
-import { Link } from 'react-router-dom';
-
-
-type GroupProps = {
-  cityName: string;
-  offerlist: Offer[];
-}
-
-function FavoritePageGroup({cityName, offerlist}:GroupProps): JSX.Element{
-  return(
-    <li className="favorites__locations-items">
-      <div className="favorites__locations locations locations--current">
-        <div className="locations__item">
-          <Link className="locations__item-link" to="#">
-            <span>{cityName}</span>
-          </Link>
-        </div>
-      </div>
-      <div className="favorites__places">
-        {offerlist.map(
-          (offerItem)=><CityCard offer={offerItem} key={offerItem.id}/>
-        )};
-      </div>
-    </li>
-  );
-}
+import FavoritePageGroup from './favorites-page-group';
 
 
 type Props = {

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import OfferCardsList from '../../components/offer-list/offer-list';
-import { Offer } from '../../data/types/offer';
+import { City, Offer } from '../../data/types/offer';
 import { Link } from 'react-router-dom';
 import Header from '../../components/header/header';
+import Map from '../../components/map/map';
 
 type MainPageProps = {
   offers: Offer[];
@@ -11,7 +12,16 @@ type MainPageProps = {
 function MainPage({offers}: MainPageProps):JSX.Element{
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isActive, setIsActive] = useState<string|null>(null);
+  const [isActiveCard, setIsActive] = useState<string|null>(null);
+
+  const currentCity: City = {
+    name:'Amsterdam',
+    location: {
+      latitude: 52.37454,
+      longitude: 4.897976,
+      zoom: 12
+    }
+  };
 
   const handleChangeActiveCard = (id:string | null) => {
     setIsActive(id);
@@ -81,7 +91,15 @@ function MainPage({offers}: MainPageProps):JSX.Element{
               <OfferCardsList onHandleChangeActiveCard = {handleChangeActiveCard} offers = {offers}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map
+                offers={offers}
+                city={currentCity}
+                currentOffer={offers[0]}
+                baseClass="cities"
+                size={
+                  { height: '100%' }
+                }
+              />
             </div>
           </div>
         </div>
@@ -89,6 +107,5 @@ function MainPage({offers}: MainPageProps):JSX.Element{
     </div>
   );
 }
-
 
 export default MainPage;
