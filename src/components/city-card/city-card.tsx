@@ -2,14 +2,19 @@ import { Offer } from '../../data/types/offer';
 
 type Props = {
   offer: Offer ;
+  baseClass: string;
+  imageSize: {
+    width: number | string;
+    height: number | string;
+  };
   onHandleChangeActiveCard?: (id: string | null)=>void;
 }
 
 
-function CityCard({offer, onHandleChangeActiveCard}: Props):JSX.Element{
+function CityCard({offer, baseClass, imageSize, onHandleChangeActiveCard}: Props):JSX.Element{
   return (
 
-    <article className="cities__card place-card"
+    <article className={`${baseClass}__card place-card`}
       onMouseEnter={() => onHandleChangeActiveCard && onHandleChangeActiveCard(offer.id)}
       onMouseLeave={() => onHandleChangeActiveCard && onHandleChangeActiveCard(null)}
     >
@@ -17,9 +22,14 @@ function CityCard({offer, onHandleChangeActiveCard}: Props):JSX.Element{
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${baseClass}__image-wrapper place-card__image-wrapper`}>
         <a href="#">
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>
+          <img
+            className="place-card__image"
+            src={offer.previewImage}
+            style={{ ...imageSize }}
+            alt="Place image"
+          />
         </a>
       </div>
       <div className="place-card__info">

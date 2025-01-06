@@ -11,7 +11,17 @@ function OfferCardsList({offers, onHandleChangeActiveCard}: Props) : JSX.Element
   return(
     <div className="cities__places-list places__list tabs__content">
       {offers.map(
-        (offerItem) => <CityCard onHandleChangeActiveCard ={onHandleChangeActiveCard} key={offerItem.id} offer={offerItem}/>
+        (offerItem) => (
+          <CityCard onHandleChangeActiveCard={onHandleChangeActiveCard}
+            key={offerItem.id}
+            offer={offerItem}
+            baseClass={'cities'}
+            imageSize={{
+              width: '260',
+              height: '200'
+            }}
+          />
+        )
       )};
     </div>
   );
