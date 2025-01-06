@@ -21,15 +21,16 @@ function FavoritePageGroup({cityName, offerlist}:GroupProps): JSX.Element{
       <div className="favorites__places">
         {offerlist.map(
           (offerItem)=>
-            (<CityCard
-              offer={offerItem}
-              key={offerItem.id}
-              baseClass={'cities'}
-              imageSize={{
-                width: '260',
-                height: '200'
-              }}
-            />)
+            (
+              <CityCard
+                offer={offerItem}
+                key={offerItem.id}
+                baseClass={'cities'}
+                imageSize={{
+                  width: '260',
+                  height: '200'
+                }}
+              />)
         )};
       </div>
     </li>
