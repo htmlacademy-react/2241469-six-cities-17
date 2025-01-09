@@ -42,7 +42,7 @@ function App({offers}: AppScreenProps): JSX.Element {
         </Route>
         <Route
           path ={PathRoutes.OFFER}
-          element = {<OfferPage/>}
+          element = {<OfferPage offers={offers}/>}
         >
         </Route>
         <Route

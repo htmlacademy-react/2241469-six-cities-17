@@ -63,7 +63,7 @@ const OfferList:Offer[] = [
     },
     location: {
       latitude: 52.3909553943508,
-      longitude: 44.929309666406198,
+      longitude: 4.929309666406198,
       zoom: 16
     },
     isFavorite: false,
