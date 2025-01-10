@@ -18,4 +18,6 @@ const reducer = createReducer(initialState, (builder) => {
       state.offers = action.payload;
     });
 });
+
 export { reducer };
+
