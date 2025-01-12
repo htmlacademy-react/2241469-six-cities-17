@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import OfferCardsList from '../../components/offer-list/offer-list';
-import { City, Offer } from '../../data/types/offer';
+import { Offer } from '../../data/types/offer';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
-import { store } from '../../store';
 import CitiesList from '../../components/cities-list/cities-list';
-import { changeCity } from '../../store/action';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks';
-import { PathRoutes } from '../../data/routes';
+import { useSelector } from 'react-redux';
+import { State } from '../../data/types/state';
 
 type MainPageProps = {
   offers: Offer[];
@@ -19,16 +16,9 @@ function MainPage({offers}: MainPageProps):JSX.Element{
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isActiveCard, setIsActive] = useState<string|null>(null);
 
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const curCity = store.getState().city;
+  const selectCity = (state: State) => state.city;
+  const curCity = useSelector(selectCity);
   const offersInCurCity = offers.filter((offer) => offer.city.name === curCity.name);
-
-
-  const citiesListClickHandler = (city: City) => {
-    dispatch(changeCity(city));
-    navigate(PathRoutes.MAIN);
-  };
 
   const handleChangeActiveCard = (id:string | null) => {
     setIsActive(id);
@@ -41,7 +31,7 @@ function MainPage({offers}: MainPageProps):JSX.Element{
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CitiesList onCityClick={citiesListClickHandler}/>
+            <CitiesList />
           </section>
         </div>
         <div className="cities">
