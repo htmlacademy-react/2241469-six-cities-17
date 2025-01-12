@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Cities } from '../../data/const';
 import { City } from '../../data/types/offer';
 import { changeCity } from '../../store/action';
-import { Link, Routes } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { State } from '../../data/types/state';
 import { PathRoutes } from '../../data/routes';
 
