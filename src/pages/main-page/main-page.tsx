@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import OfferCardsList from '../../components/offer-list/offer-list';
-import { City, Offer } from '../../data/types/offer';
-import { Link } from 'react-router-dom';
+import { Offer } from '../../data/types/offer';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
+import CitiesList from '../../components/cities-list/cities-list';
+import { useSelector } from 'react-redux';
+import { State } from '../../data/types/state';
 
 type MainPageProps = {
   offers: Offer[];
@@ -14,14 +16,9 @@ function MainPage({offers}: MainPageProps):JSX.Element{
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isActiveCard, setIsActive] = useState<string|null>(null);
 
-  const currentCity: City = {
-    name:'Amsterdam',
-    location: {
-      latitude: 52.37454,
-      longitude: 4.897976,
-      zoom: 12
-    }
-  };
+  const selectCity = (state: State) => state.city;
+  const curCity = useSelector(selectCity);
+  const offersInCurCity = offers.filter((offer) => offer.city.name === curCity.name);
 
   const handleChangeActiveCard = (id:string | null) => {
     setIsActive(id);
@@ -34,45 +31,14 @@ function MainPage({offers}: MainPageProps):JSX.Element{
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Paris</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Cologne</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Brussels</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item tabs__item--active" to="#">
-                  <span>Amsterdam</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Hamburg</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Dusseldorf</span>
-                </Link>
-              </li>
-            </ul>
+            <CitiesList />
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
+              <b className="places__found">{offersInCurCity.length} places to stay in {curCity.name}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -88,12 +54,12 @@ function MainPage({offers}: MainPageProps):JSX.Element{
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <OfferCardsList onHandleChangeActiveCard = {handleChangeActiveCard} offers = {offers}/>
+              <OfferCardsList onHandleChangeActiveCard = {handleChangeActiveCard} offers = {offersInCurCity}/>
             </section>
             <div className="cities__right-section">
               <Map
-                offers={offers}
-                city={currentCity}
+                offers={offersInCurCity}
+                city={curCity}
                 currentOffer={offers[0]}
                 baseClass="cities"
                 size={

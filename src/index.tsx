@@ -2,14 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import OfferList from './mocks/offers';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+
 root.render(
   <React.StrictMode>
-    <App offers= {OfferList}/>
+    <Provider store={store}>
+      <App
+        offers={OfferList}
+      />
+    </Provider>
+
   </React.StrictMode>
 );
