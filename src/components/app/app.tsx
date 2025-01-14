@@ -8,20 +8,20 @@ import Page404 from '../../pages/page-404/page-404';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import PrivateRoute from '../private-route/private-route';
 import { AuthorizationStatus } from '../../data/authorization';
-import { Offer } from '../../data/types/offer';
+import { store } from '../../store';
 
-type AppScreenProps = {
-  offers: Offer[];
-}
 
-function App({offers}: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
+
+  const offers = store.getState().offers;
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
         <Route
           path ={PathRoutes.MAIN}
-          element={<MainPage offers={offers} />}
+          element={<MainPage />}
         >
         </Route>
         <Route
