@@ -3,14 +3,12 @@ import { useAppDispatch } from '../../hooks';
 import { Sorts } from '../../const';
 import { changeSort } from '../../store/action';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { PathRoutes } from '../../data/routes';
 
 
 function SortOptions(): JSX.Element {
 
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
+
 
   const dispatch = useAppDispatch();
   const activeSort = store.getState().sort;
@@ -18,7 +16,6 @@ function SortOptions(): JSX.Element {
   const sortFormChangeHandler = (filter: string) => {
     dispatch(changeSort(filter));
     setIsOpen(false);
-    navigate(PathRoutes.MAIN);
   };
 
   return (
