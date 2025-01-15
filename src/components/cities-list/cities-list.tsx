@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Cities } from '../../data/const';
 import { City } from '../../data/types/offer';
-import { changeCity } from '../../store/action';
+import { changeCity, resetSort } from '../../store/action';
 import { Link } from 'react-router-dom';
 import { State } from '../../data/types/state';
 import { PathRoutes } from '../../data/routes';
@@ -16,6 +16,7 @@ function CitiesList(): JSX.Element {
 
   const handleCityChange = (cityName: City) => {
     dispatch(changeCity(cityName));
+    dispatch(resetSort());
   };
 
 
