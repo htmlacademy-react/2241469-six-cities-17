@@ -8,13 +8,15 @@ import { State } from '../../data/types/state';
 import SortOptions from '../../components/sort-option/sort-option';
 import { store } from '../../store';
 import { Offer } from '../../data/types/offer';
+import { useAppSelector } from '../../hooks';
+import Loader from '../../components/loader/loader';
 
 
 function MainPage():JSX.Element{
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedOffer, setIsActive] = useState<Offer|null>(null);
+  const [setSelectedOffer, setIsActive] = useState<Offer|null>(null);
 
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
   const selectCity = (state: State) => state.city;
   const curCity = useSelector(selectCity);
@@ -40,14 +42,24 @@ function MainPage():JSX.Element{
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offersInCurCity.length} places to stay in {curCity.name}</b>
-              <SortOptions />
-              <OfferCardsList onHandleChangeActiveCard = {handleChangeActiveCard} offers = {offersInCurCity}/>
+
+              {
+                isOffersDataLoading
+                  ? <Loader />
+                  :
+                  <>
+                    <SortOptions />
+                    <OfferCardsList onHandleChangeActiveCard = {handleChangeActiveCard} offers = {offersInCurCity}/>
+                  </>
+              }
+
+
             </section>
             <div className="cities__right-section">
               <Map
                 offers={offersInCurCity}
                 city={curCity}
-                currentOffer={selectedOffer}
+                currentOffer={setSelectedOffer}
                 baseClass="cities"
                 size={
                   { height: '100%' }
