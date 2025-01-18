@@ -26,7 +26,7 @@ function FavoritesPage({offers}:Props):JSX.Element{
   return (
 
     <div className="page">
-      <Header isLoggedIn />
+      <Header/>
 
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
