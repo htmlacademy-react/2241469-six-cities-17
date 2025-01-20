@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import MainPage from '../../pages/main-page/main-page';
 import { PathRoutes } from '../../data/routes';
 import LoginPage from '../../pages/login-page/login-page';
@@ -7,16 +7,19 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import Page404 from '../../pages/page-404/page-404';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import PrivateRoute from '../private-route/private-route';
-import { AuthorizationStatus } from '../../data/authorization';
 import { store } from '../../store';
+import { useAppSelector } from '../../hooks';
+import browserHistory from '../../browser-history';
+import HistoryRouter from '../history-route/history-route';
 
 
 function App(): JSX.Element {
 
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const offers = store.getState().offers;
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <ScrollToTop />
       <Routes>
         <Route
@@ -33,7 +36,7 @@ function App(): JSX.Element {
           path ={PathRoutes.FAVORITES}
           element = {
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.Auth}
+              authorizationStatus={authorizationStatus}
             >
               <FavoritesPage offers={offers}/>
             </PrivateRoute>
@@ -51,7 +54,7 @@ function App(): JSX.Element {
         >
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

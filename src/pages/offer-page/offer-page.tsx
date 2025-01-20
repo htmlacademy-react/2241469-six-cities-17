@@ -18,7 +18,7 @@ function OfferPage({offers}: OfferPageProps):JSX.Element{
 
   return (
     <div className="page">
-      <Header isLoggedIn />
+      <Header countFavorite={undefined}/>
 
       <main className="page__main page__main--offer">
         <section className="offer">
