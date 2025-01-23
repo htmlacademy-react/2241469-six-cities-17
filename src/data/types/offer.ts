@@ -23,10 +23,16 @@ export type Location= {
 }
 
 
-export type Review= {
+export type Review = {
   id: string;
   date: string;
   user: UserReview;
+  comment: string;
+  rating: number;
+};
+
+export type ReviewToSend = {
+  id: string;
   comment: string;
   rating: number;
 };
@@ -36,3 +42,22 @@ export type UserReview = {
   avatarUrl: string;
   isPro: boolean;
 };
+
+
+export type Host = {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+}
+
+export type CurrentOffer = Offer & {
+  images: string[];
+  description: string;
+  goods: string[];
+  host: Host;
+  bedrooms: number;
+  maxAdults: number;
+};
+
+export type OfferClick = (offer: Offer) => void;
+export type OfferHover = (offer: Offer) => void;

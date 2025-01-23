@@ -6,11 +6,6 @@ import { logoutAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 
-type HeaderProps = {
-    countFavorite?: number;
-  }
-
-
 function LoggedUser({ countFavorite }: { countFavorite: number }): JSX.Element {
   const dispatch = useAppDispatch();
   return (
@@ -50,8 +45,9 @@ function NotLoggedUser(): JSX.Element {
   );
 }
 
-function Header({countFavorite }: HeaderProps): JSX.Element {
+function Header(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const favoriteOffers = useAppSelector((state) => state.favoriteOffers);
 
   return (
     <header className="header">
@@ -61,7 +57,7 @@ function Header({countFavorite }: HeaderProps): JSX.Element {
             <Logo />
           </div>
           <nav className="header__nav">
-            {authorizationStatus === AuthorizationStatus.Auth ? <LoggedUser countFavorite={countFavorite ?? 0} /> : <NotLoggedUser />}
+            {authorizationStatus === AuthorizationStatus.Auth ? <LoggedUser countFavorite={favoriteOffers.length ?? 0} /> : <NotLoggedUser />}
           </nav>
         </div>
       </div>

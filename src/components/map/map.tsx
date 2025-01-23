@@ -9,7 +9,7 @@ import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../data/const';
 type MapProps = {
   city: City | null;
   offers: Offer[];
-  currentOffer: Offer | null;
+  currentOffer: Offer | undefined;
   baseClass: string;
   size?: {
     height?: number | string;
