@@ -1,4 +1,3 @@
-import { City } from './types/offer';
 
 export const COUNT_CHARACTER = 50;
 export const URL_MARKER_DEFAULT = '/img/pin.svg';
