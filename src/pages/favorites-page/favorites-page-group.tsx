@@ -1,7 +1,7 @@
 import CityCard from '../../components/city-card/city-card';
 import { PathRoutes } from '../../data/routes';
 import { Link } from 'react-router-dom';
-import { Offer, OfferClick, OfferHover } from '../../data/types/offer';
+import { Offer, OfferClick } from '../../data/types/offer';
 
 type GroupProps = {
     cityName: string;

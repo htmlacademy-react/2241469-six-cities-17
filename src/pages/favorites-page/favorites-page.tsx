@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { Offer, OfferClick, OfferHover } from '../../data/types/offer';
+import { Offer, OfferClick } from '../../data/types/offer';
 import FavoritePageGroup from './favorites-page-group';
 import { useAppSelector } from '../../hooks';
 
