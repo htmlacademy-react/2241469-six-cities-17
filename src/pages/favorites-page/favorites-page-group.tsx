@@ -30,6 +30,7 @@ function FavoritePageGroup({cityName, offerlist,onOfferClick}:GroupProps): JSX.E
                   width: '260',
                   height: '200'
                 }} onOfferClick={onOfferClick}
+                onOfferHover={undefined}
               />)
         )};
       </div>
