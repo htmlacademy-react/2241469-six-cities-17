@@ -65,7 +65,9 @@ function CommentForm({onFormSubmit}: CommentFormProps): JSX.Element {
         <p className="reviews__help">
         To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{COUNT_CHARACTER} characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={!isValid || isSubmitting}>{isSubmitting ? 'Submitting...' : 'Submit'}</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={!isValid || isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Submit'}
+        </button>
       </div>
     </form>
   );

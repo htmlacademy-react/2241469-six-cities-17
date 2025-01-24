@@ -6,11 +6,9 @@ import { Offer, OfferClick, OfferHover } from '../../data/types/offer';
 type GroupProps = {
     cityName: string;
     offerlist: Offer[];
-    onOfferClick: OfferClick;
-    onOfferHover: OfferHover;
-  }
+    onOfferClick: OfferClick; }
 
-function FavoritePageGroup({cityName, offerlist,onOfferClick, onOfferHover}:GroupProps): JSX.Element{
+function FavoritePageGroup({cityName, offerlist,onOfferClick}:GroupProps): JSX.Element{
   return(
     <li className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
@@ -31,7 +29,7 @@ function FavoritePageGroup({cityName, offerlist,onOfferClick, onOfferHover}:Grou
                 imageSize={{
                   width: '260',
                   height: '200'
-                }} onOfferHover={onOfferHover} onOfferClick={onOfferClick}
+                }} onOfferClick={onOfferClick}
               />)
         )};
       </div>

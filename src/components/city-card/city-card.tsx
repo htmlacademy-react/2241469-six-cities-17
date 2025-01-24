@@ -10,7 +10,7 @@ type Props = {
     width: number | string;
     height: number | string;
   };
-  onOfferHover: OfferHover;
+  onOfferHover: OfferHover | undefined;
   onOfferClick: OfferClick;
 }
 
@@ -31,7 +31,11 @@ function CityCard({offer, baseClass, imageSize, onOfferHover,onOfferClick}: Prop
         });
         onOfferClick(offer);
       }}
-      onMouseEnter={() => onOfferHover(offer)}
+      onMouseEnter={() => {
+        if (onOfferHover) {
+          onOfferHover(offer);
+        }
+      }}
     >
 
       { isPremium ?

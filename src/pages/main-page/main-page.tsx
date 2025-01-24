@@ -3,26 +3,37 @@ import Header from '../../components/header/header';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import SortOptions from '../../components/sort-option/sort-option';
-import { Offer, OfferClick, OfferHover } from '../../data/types/offer';
+import { Offer, OfferClick } from '../../data/types/offer';
 import { useAppSelector } from '../../hooks';
 import Loader from '../../components/loader/loader';
 import { Helmet } from 'react-helmet-async';
+import { useMemo, useState } from 'react';
 
 
 type MainPageProps = {
   onOfferClick: OfferClick;
-  onOfferHover: OfferHover;
-  selectedOffer: Offer | undefined;
+
 }
 
-function MainPage({onOfferClick, onOfferHover, selectedOffer}: MainPageProps):JSX.Element{
+function MainPage({onOfferClick}: MainPageProps):JSX.Element{
 
-
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
 
   const curCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offers);
 
-  const offersInCurCity = useAppSelector((state) => state.offers).filter((offer) => curCity && offer.city.name === curCity.name);
+  const offersInCurCity = useMemo(() => {
+    if (!curCity) {
+      return [];
+    }
+    return offers.filter((offer) => offer.city.name === curCity.name);
+  }, [curCity, offers]);
+
+  const handleChangeActiveCard = (curOffer: Offer | undefined) => {
+    setSelectedOffer(curOffer);
+  };
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
 
   return (
     <div className="page page--gray page--main">
@@ -49,7 +60,7 @@ function MainPage({onOfferClick, onOfferHover, selectedOffer}: MainPageProps):JS
                   :
                   <>
                     <SortOptions />
-                    <OfferCardsList onOfferHover = {onOfferHover} offers = {offersInCurCity} onOfferClick={onOfferClick}/>
+                    <OfferCardsList onOfferHover = {handleChangeActiveCard} offers = {offersInCurCity} onOfferClick={onOfferClick}/>
                   </>
               }
 

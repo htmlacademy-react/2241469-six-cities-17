@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import Loader from '../../components/loader/loader';
 import Page404 from '../page-404/page-404';
-import { Offer, OfferClick, OfferHover } from '../../data/types/offer';
+import { OfferClick } from '../../data/types/offer';
 import { useEffect } from 'react';
 import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearestOfferAction } from '../../store/api-actions';
 import { useParams } from 'react-router-dom';
@@ -15,8 +15,6 @@ import { store } from '../../store';
 
 type OfferPageProps = {
     onOfferClick: OfferClick;
-    onOfferHover: OfferHover;
-    selectedOffer: Offer | undefined;
 }
 
 function useOfferData(currentId: string) {
@@ -28,7 +26,7 @@ function useOfferData(currentId: string) {
 }
 
 
-function OfferPage({selectedOffer, onOfferClick, onOfferHover}: OfferPageProps):JSX.Element{
+function OfferPage({onOfferClick}: OfferPageProps):JSX.Element{
 
   const { id: currentId } = useParams<{ id: string }>();
 
@@ -154,7 +152,7 @@ function OfferPage({selectedOffer, onOfferClick, onOfferHover}: OfferPageProps):
             offers={offersNear}
             baseClass="offer"
             city={currentCity}
-            currentOffer={selectedOffer}
+            currentOffer={currentOffer}
           />
 
         </section>
@@ -170,7 +168,7 @@ function OfferPage({selectedOffer, onOfferClick, onOfferHover}: OfferPageProps):
                   imageSize={{ width: 260, height: 200 }}
                   offer={item}
                   onOfferClick={onOfferClick}
-                  onOfferHover={onOfferHover}
+                  onOfferHover={undefined}
                 />
               ))}
             </div>

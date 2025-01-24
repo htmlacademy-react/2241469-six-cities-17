@@ -18,9 +18,7 @@ import { useAppSelector } from '../../hooks';
 function App(): JSX.Element {
 
   const [currentOffer, setCurrentOffer] = useState<Offer>({} as Offer);
-  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(
-    undefined
-  );
+
 
   const handleOfferClickHandler = (offer: Offer) => {
     setCurrentOffer({
@@ -29,10 +27,6 @@ function App(): JSX.Element {
     });
   };
 
-  const handleChangeActiveCard = (offerElement: Offer) => {
-    const currentPoint = offerElement;
-    setSelectedOffer(currentPoint);
-  };
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
@@ -44,9 +38,8 @@ function App(): JSX.Element {
           <Route
             path ={PathRoutes.MAIN}
             element={
-              <MainPage onOfferClick={handleOfferClickHandler}
-                onOfferHover={handleChangeActiveCard}
-                selectedOffer={selectedOffer}
+              <MainPage
+                onOfferClick={handleOfferClickHandler}
               />
             }
           >
@@ -62,8 +55,8 @@ function App(): JSX.Element {
               <PrivateRoute
                 authorizationStatus={authorizationStatus}
               >
-                <FavoritesPage onOfferClick={handleOfferClickHandler}
-                  onOfferHover={handleChangeActiveCard}
+                <FavoritesPage
+                  onOfferClick={handleOfferClickHandler}
                 />
               </PrivateRoute>
             }
@@ -77,8 +70,6 @@ function App(): JSX.Element {
               element={
                 <OfferPage
                   onOfferClick={handleOfferClickHandler}
-                  onOfferHover={handleChangeActiveCard}
-                  selectedOffer={selectedOffer}
                 />
               }
             />

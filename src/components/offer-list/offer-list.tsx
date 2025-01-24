@@ -4,7 +4,7 @@ import CityCard from '../city-card/city-card';
 
 type Props = {
     offers: Offer[];
-    onOfferHover: OfferHover;
+    onOfferHover: OfferHover | undefined;
     onOfferClick: OfferClick;
   }
 

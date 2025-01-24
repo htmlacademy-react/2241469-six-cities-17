@@ -1,5 +1,6 @@
 import { useState, useCallback, ChangeEvent } from 'react';
 import { ReviewToSend } from '../data/types/offer';
+import { MAX_LEN_COMMENT, MIN_RATING } from '../const';
 
 
 export const useCommentForm = (initialData: ReviewToSend) => {
@@ -18,7 +19,7 @@ export const useCommentForm = (initialData: ReviewToSend) => {
     []
   );
 
-  const isValid = formData.rating > 0 && formData.comment.trim().length >= 50;
+  const isValid = formData.rating > MIN_RATING && formData.comment.trim().length >= MAX_LEN_COMMENT;
 
   const resetForm = () => {
     setFormData(initialData);

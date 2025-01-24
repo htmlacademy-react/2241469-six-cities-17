@@ -60,4 +60,4 @@ export type CurrentOffer = Offer & {
 };
 
 export type OfferClick = (offer: Offer) => void;
-export type OfferHover = (offer: Offer) => void;
+export type OfferHover = (offer: Offer | undefined) => void;

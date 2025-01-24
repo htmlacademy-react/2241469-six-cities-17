@@ -18,10 +18,9 @@ function GroupByCity(offers: Offer[]): Record<string, Offer[]> {
 
 type FavoritesPageProps = {
   onOfferClick: OfferClick;
-  onOfferHover: OfferHover;
 }
 
-function FavoritesPage({onOfferClick, onOfferHover}: FavoritesPageProps):JSX.Element{
+function FavoritesPage({onOfferClick}: FavoritesPageProps):JSX.Element{
   const offers = useAppSelector((state) => state.favoriteOffers);
   const favoritesGroups: Record<string, Offer[]> = GroupByCity(offers);
 
@@ -40,7 +39,7 @@ function FavoritesPage({onOfferClick, onOfferHover}: FavoritesPageProps):JSX.Ele
             <ul className="favorites__list">
 
               {Object.entries(favoritesGroups).map(
-                ([city, offerlist]) => <FavoritePageGroup cityName={city} offerlist={offerlist} key={city} onOfferClick={onOfferClick} onOfferHover={onOfferHover}/>
+                ([city, offerlist]) => <FavoritePageGroup cityName={city} offerlist={offerlist} key={city} onOfferClick={onOfferClick} />
               )}
 
             </ul>
