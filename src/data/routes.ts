@@ -1,7 +1,8 @@
-export const enum PathRoutes{
+export enum PathRoutes{
     MAIN = '/',
     LOGIN = '/login',
     FAVORITES = '/favorites',
-    OFFER = '/offer/:id',
+    OFFER = '/offer',
+    OFFERID = ':id',
     NOTFOUND = '*'
 }

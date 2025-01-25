@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { APIRoute, TIMEOUT_SHOW_ERROR } from '../data/const';
-import { loadOffers, loadUserData, redirectToRoute, requireAuthorization, setError, setOffersDataLoadingStatus } from './action';
+import { loadComments, loadCurrentOffer, loadFavoriteOffers, loadNearestOffers, loadOffers, loadUserData, redirectToRoute, requireAuthorization, setError, setOffersDataLoadingStatus } from './action';
 import { AppDispatch, State } from '../data/types/state';
 import { AxiosInstance } from 'axios';
-import { Offer } from '../data/types/offer';
+import { CurrentOffer, Offer, Review, ReviewToSend } from '../data/types/offer';
 import { AuthorizationStatus } from '../data/authorization';
 import { AuthData, UserData } from '../data/types/users';
 import { dropToken, saveToken } from '../services/token';
@@ -13,10 +13,15 @@ import { PathRoutes } from '../data/routes';
 
 export const APIAction = {
   FETCH_OFFERS: 'FETCH_OFFERS',
+  FETCH_CURRENT_OFFER: 'FETCH_CURRENT_OFFER',
+  FETCH_NEAREST_OFFERS: 'FETCH_NEAREST_OFFERS',
   CHECK_AUTH: 'CHECK_AUTH',
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
-  CLEAR_ERROR: 'CLEAR_ERROR'
+  CLEAR_ERROR: 'CLEAR_ERROR',
+  FETCH_COMMENTS: 'FETCH_COMMENTS',
+  POST_COMMENT: 'POST_COMMENT',
+  UPDATE_OFFER_FAVORITE_STATUS: 'UPDATE_OFFER_FAVORITE_STATUS'
 };
 
 
@@ -36,6 +41,61 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
     }
   );
 
+export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }>(
+    APIAction.FETCH_OFFERS,
+    async (_arg, {dispatch, extra: api}) => {
+      dispatch(setOffersDataLoadingStatus(true));
+      const { data } = await api.get<Offer[]>(APIRoute.Favorite);
+      dispatch(setOffersDataLoadingStatus(false));
+      dispatch(loadFavoriteOffers(data));
+    }
+  );
+
+export const fetchCurrentOfferAction = createAsyncThunk<void, string, {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }>(
+    APIAction.FETCH_CURRENT_OFFER,
+    async (id, {dispatch, extra: api}) => {
+
+      dispatch(setOffersDataLoadingStatus(true));
+      const { data } = await api.get<CurrentOffer>(`${APIRoute.Offers}/${id}`);
+      dispatch(setOffersDataLoadingStatus(false));
+      dispatch(loadCurrentOffer(data));
+
+    }
+  );
+
+export const fetchNearestOfferAction = createAsyncThunk<void, string, {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }>(
+    APIAction.FETCH_NEAREST_OFFERS,
+    async (id, {dispatch, extra: api}) => {
+      const { data } = await api.get<Offer[]>(`${APIRoute.Offers}/${id}/nearby`);
+      dispatch(loadNearestOffers(data));
+    }
+  );
+
+export const fetchCommentsAction = createAsyncThunk<void, string, {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }>(
+    APIAction.FETCH_COMMENTS,
+    async (id, {dispatch, extra: api}) => {
+      const { data } = await api.get<Review[]>(`${APIRoute.Comments}/${id}`);
+      dispatch(loadComments(data));
+    }
+  );
+
+
 export const checkAuthAction = createAsyncThunk<void, undefined, {
     dispatch: AppDispatch;
     state: State;
@@ -51,6 +111,30 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
       } catch {
         dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
       }
+    }
+  );
+
+export const postCommentAction = createAsyncThunk<void, ReviewToSend, {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+  >(
+    APIAction.POST_COMMENT,
+    async ({comment, rating, id}, {extra: api}) => {
+      await api.post<ReviewToSend>(`${APIRoute.Comments}/${id}`, {comment, rating});
+    }
+  );
+
+export const updateOfferFavoriteStatusAction = createAsyncThunk<void, Offer, {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }>(
+    APIAction.UPDATE_OFFER_FAVORITE_STATUS,
+    async ({isFavorite, id}, {extra: api}) => {
+      const status = isFavorite ? 0 : 1;
+      await api.post(`${APIRoute.Favorite}/${id}/${status}`);
     }
   );
 

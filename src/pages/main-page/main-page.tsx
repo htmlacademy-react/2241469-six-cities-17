@@ -1,34 +1,45 @@
-import { useState } from 'react';
 import OfferCardsList from '../../components/offer-list/offer-list';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
-import { useSelector } from 'react-redux';
-import { State } from '../../data/types/state';
 import SortOptions from '../../components/sort-option/sort-option';
-import { store } from '../../store';
-import { Offer } from '../../data/types/offer';
+import { Offer, OfferClick } from '../../data/types/offer';
 import { useAppSelector } from '../../hooks';
 import Loader from '../../components/loader/loader';
+import { Helmet } from 'react-helmet-async';
+import { useMemo, useState } from 'react';
 
 
-function MainPage():JSX.Element{
+type MainPageProps = {
+  onOfferClick: OfferClick;
 
-  const [setSelectedOffer, setIsActive] = useState<Offer|null>(null);
+}
 
+function MainPage({onOfferClick}: MainPageProps):JSX.Element{
+
+  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
+
+  const curCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offers);
+
+  const offersInCurCity = useMemo(() => {
+    if (!curCity) {
+      return [];
+    }
+    return offers.filter((offer) => offer.city.name === curCity.name);
+  }, [curCity, offers]);
+
+  const handleChangeActiveCard = (curOffer: Offer | undefined) => {
+    setSelectedOffer(curOffer);
+  };
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
-  const selectCity = (state: State) => state.city;
-  const curCity = useSelector(selectCity);
-  const offersInCurCity = store.getState().offers.filter((offer) => offer.city.name === curCity.name);
-
-  const handleChangeActiveCard = (id:string | null) => {
-    const currentOffer = offersInCurCity.find((offer) => offer.id === id) || null;
-    setIsActive(currentOffer);
-  };
 
   return (
     <div className="page page--gray page--main">
+      <Helmet>
+        <title>Main</title>
+      </Helmet>
       <Header/>
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
@@ -49,17 +60,16 @@ function MainPage():JSX.Element{
                   :
                   <>
                     <SortOptions />
-                    <OfferCardsList onHandleChangeActiveCard = {handleChangeActiveCard} offers = {offersInCurCity}/>
+                    <OfferCardsList onOfferHover = {handleChangeActiveCard} offers = {offersInCurCity} onOfferClick={onOfferClick}/>
                   </>
               }
-
 
             </section>
             <div className="cities__right-section">
               <Map
                 offers={offersInCurCity}
                 city={curCity}
-                currentOffer={setSelectedOffer}
+                currentOffer={selectedOffer}
                 baseClass="cities"
                 size={
                   { height: '100%' }
@@ -74,3 +84,4 @@ function MainPage():JSX.Element{
 }
 
 export default MainPage;
+

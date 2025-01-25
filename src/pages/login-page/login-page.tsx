@@ -3,6 +3,7 @@ import Header from '../../components/header/header';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
+import { Helmet } from 'react-helmet-async';
 
 
 function LoginPage():JSX.Element{
@@ -25,6 +26,9 @@ function LoginPage():JSX.Element{
 
   return (
     <div className="page page--gray page--login">
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       <Header />
 
       <main className="page__main page__main--login">
