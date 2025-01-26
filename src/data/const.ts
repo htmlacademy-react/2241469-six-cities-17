@@ -65,6 +65,13 @@ export const Cities = {
   }
 };
 
+export enum NameSpace {
+  User = 'USER',
+  Offers = 'OFFERS',
+  Comments = 'COMMENTS',
+  City = 'CITY',
+  Errors = 'ERRORS'
+}
 
 export enum APIRoute {
   Offers = '/offers',

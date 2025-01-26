@@ -10,25 +10,14 @@ import PrivateRoute from '../private-route/private-route';
 import browserHistory from '../../browser-history';
 import HistoryRouter from '../history-route/history-route';
 import { HelmetProvider } from 'react-helmet-async';
-import { useState } from 'react';
-import { Offer } from '../../data/types/offer';
 import { useAppSelector } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/slices/user-slice/user-selector';
 
 
 function App(): JSX.Element {
 
-  const [currentOffer, setCurrentOffer] = useState<Offer>({} as Offer);
 
-
-  const handleOfferClickHandler = (offer: Offer) => {
-    setCurrentOffer({
-      ...currentOffer,
-      id: offer.id
-    });
-  };
-
-
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <HelmetProvider>
@@ -38,9 +27,7 @@ function App(): JSX.Element {
           <Route
             path ={PathRoutes.MAIN}
             element={
-              <MainPage
-                onOfferClick={handleOfferClickHandler}
-              />
+              <MainPage />
             }
           >
           </Route>
@@ -55,9 +42,7 @@ function App(): JSX.Element {
               <PrivateRoute
                 authorizationStatus={authorizationStatus}
               >
-                <FavoritesPage
-                  onOfferClick={handleOfferClickHandler}
-                />
+                <FavoritesPage />
               </PrivateRoute>
             }
           >
@@ -68,9 +53,7 @@ function App(): JSX.Element {
             <Route
               path={PathRoutes.OFFERID}
               element={
-                <OfferPage
-                  onOfferClick={handleOfferClickHandler}
-                />
+                <OfferPage />
               }
             />
           </Route>

@@ -1,21 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Cities } from '../../data/const';
 import { City } from '../../data/types/offer';
-import { changeCity, resetSort } from '../../store/action';
 import { Link } from 'react-router-dom';
-import { State } from '../../data/types/state';
 import { PathRoutes } from '../../data/routes';
+import { getCurrentCity } from '../../store/slices/city-slice/city-selector';
+import { changeCity } from '../../store/slices/city-slice/city-slice';
+import { resetSort } from '../../store/slices/offer-slice/offer-slice';
 
 
 function CitiesList(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const selectCity = (state: State) => state.city;
-  const activeCity = useSelector(selectCity);
 
-  const handleCityChange = (cityName: City) => {
-    dispatch(changeCity(cityName));
+  const activeCity = useSelector(getCurrentCity);
+
+  const handleCityChange = (changedCity: City) => {
+    dispatch(changeCity(changedCity));
     dispatch(resetSort());
   };
 

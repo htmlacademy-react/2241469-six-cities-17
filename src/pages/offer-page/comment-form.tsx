@@ -1,10 +1,11 @@
-import { Fragment } from 'react';
+import { Fragment, memo, useCallback, useMemo } from 'react';
 import { COUNT_CHARACTER, StarTitles } from '../../data/const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { PathRoutes } from '../../data/routes';
 import { ReviewToSend } from '../../data/types/offer';
 import { useCommentForm } from '../../hooks/use-comment';
 import { fetchCommentsAction } from '../../store/api-actions';
+import { getCurrentOffer } from '../../store/slices/offer-slice/offer-selector';
 
 
 type CommentFormProps = {
@@ -15,20 +16,47 @@ type CommentFormProps = {
 function CommentForm({onFormSubmit}: CommentFormProps): JSX.Element {
 
   const dispatch = useAppDispatch();
+  const currentOffer = useAppSelector(getCurrentOffer);
 
-  const currentOffer = useAppSelector((state) => state.currentOffer);
+  const {
+    formData,
+    handleChange,
+    isValid,
+    handleSubmit,
+    isSubmitting,
+    resetForm,
+  } = useCommentForm({
+    id: currentOffer?.id ?? '',
+    rating: 0,
+    comment: '',
+  });
 
-  const { formData, handleChange, isValid, handleSubmit, isSubmitting , resetForm} =
-    useCommentForm({
-      id: currentOffer?.id ?? '',
-      rating: 0,
-      comment: '',
-    });
-
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = useCallback(async () => {
     await handleSubmit(onFormSubmit);
     dispatch(fetchCommentsAction(currentOffer?.id ?? ''));
-  };
+  }, [handleSubmit, onFormSubmit, dispatch, currentOffer?.id]);
+
+  const ratingStars = useMemo(() => Object.entries(StarTitles).map((star) => (
+    <Fragment key={star[0]}>
+      <input
+        className="form__rating-input visually-hidden"
+        name="rating"
+        value={star[0]}
+        id={`${star[0]}-stars`}
+        type="radio"
+        onChange={handleChange('rating')}
+      />
+      <label
+        htmlFor={`${star[0]}-stars`}
+        className="reviews__rating-label form__rating-label"
+        title={star[1]}
+      >
+        <svg className="form__star-image" width="37" height="33">
+          <use xlinkHref="#icon-star"></use>
+        </svg>
+      </label>
+    </Fragment>
+  )).reverse(), [handleChange]);
 
   return(
     <form onSubmit={(e) => {
@@ -39,20 +67,7 @@ function CommentForm({onFormSubmit}: CommentFormProps): JSX.Element {
     >
 
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <div className="reviews__rating-form form__rating">
-        {Object.entries(StarTitles).map((star) => (
-          <Fragment key={star[0]}>
-            <input className="form__rating-input visually-hidden" name="rating" value={star[0]} id={`${star[0]}-stars`} type="radio"
-              onChange={handleChange('rating')}
-            />
-            <label htmlFor={`${star[0]}-stars`} className="reviews__rating-label form__rating-label" title={star[1]}>
-              <svg className="form__star-image" width="37" height="33">
-                <use xlinkHref="#icon-star"></use>
-              </svg>
-            </label>
-          </Fragment>)
-        ).reverse()}
-      </div>
+      <div className="reviews__rating-form form__rating">{ratingStars}</div>
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
@@ -73,4 +88,6 @@ function CommentForm({onFormSubmit}: CommentFormProps): JSX.Element {
   );
 }
 
-export default CommentForm;
+
+export default memo(CommentForm);
+

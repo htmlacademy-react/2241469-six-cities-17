@@ -1,18 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { APIRoute, TIMEOUT_SHOW_ERROR } from '../data/const';
-import { loadComments, loadCurrentOffer, loadFavoriteOffers, loadNearestOffers, loadOffers, loadUserData, redirectToRoute, requireAuthorization, setError, setOffersDataLoadingStatus } from './action';
+import { redirectToRoute} from './action';
 import { AppDispatch, State } from '../data/types/state';
 import { AxiosInstance } from 'axios';
 import { CurrentOffer, Offer, Review, ReviewToSend } from '../data/types/offer';
-import { AuthorizationStatus } from '../data/authorization';
 import { AuthData, UserData } from '../data/types/users';
 import { dropToken, saveToken } from '../services/token';
-import { store } from '.';
 import { PathRoutes } from '../data/routes';
+import { setError } from './slices/errors-slice/errors-slice';
 
 
 export const APIAction = {
   FETCH_OFFERS: 'FETCH_OFFERS',
+  FETCH_FAVORITE_OFFERS: 'FETCH_FAVORITE_OFFERS',
   FETCH_CURRENT_OFFER: 'FETCH_CURRENT_OFFER',
   FETCH_NEAREST_OFFERS: 'FETCH_NEAREST_OFFERS',
   CHECK_AUTH: 'CHECK_AUTH',
@@ -25,92 +25,76 @@ export const APIAction = {
 };
 
 
-export const fetchOffersAction = createAsyncThunk<void, undefined, {
+export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }>(
     APIAction.FETCH_OFFERS,
-    async (_arg, {dispatch, extra: api}) => {
-      dispatch(setOffersDataLoadingStatus(true));
-
+    async (_arg, {extra: api}) => {
       const { data } = await api.get<Offer[]>(APIRoute.Offers);
-
-      dispatch(setOffersDataLoadingStatus(false));
-      dispatch(loadOffers(data));
+      return data;
     }
   );
 
-export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, {
+export const fetchFavoriteOffersAction = createAsyncThunk<Offer[], undefined, {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }>(
-    APIAction.FETCH_OFFERS,
-    async (_arg, {dispatch, extra: api}) => {
-      dispatch(setOffersDataLoadingStatus(true));
+    APIAction.FETCH_FAVORITE_OFFERS,
+    async (_arg, {extra: api}) => {
       const { data } = await api.get<Offer[]>(APIRoute.Favorite);
-      dispatch(setOffersDataLoadingStatus(false));
-      dispatch(loadFavoriteOffers(data));
+      return data;
     }
   );
 
-export const fetchCurrentOfferAction = createAsyncThunk<void, string, {
+export const fetchCurrentOfferAction = createAsyncThunk<CurrentOffer, string, {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }>(
     APIAction.FETCH_CURRENT_OFFER,
-    async (id, {dispatch, extra: api}) => {
-
-      dispatch(setOffersDataLoadingStatus(true));
+    async (id, {extra: api}) => {
       const { data } = await api.get<CurrentOffer>(`${APIRoute.Offers}/${id}`);
-      dispatch(setOffersDataLoadingStatus(false));
-      dispatch(loadCurrentOffer(data));
-
+      return data;
     }
   );
 
-export const fetchNearestOfferAction = createAsyncThunk<void, string, {
+export const fetchNearestOfferAction = createAsyncThunk<Offer[], string, {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }>(
     APIAction.FETCH_NEAREST_OFFERS,
-    async (id, {dispatch, extra: api}) => {
+    async (id, {extra: api}) => {
       const { data } = await api.get<Offer[]>(`${APIRoute.Offers}/${id}/nearby`);
-      dispatch(loadNearestOffers(data));
+      return data;
     }
   );
 
-export const fetchCommentsAction = createAsyncThunk<void, string, {
+export const fetchCommentsAction = createAsyncThunk<Review[], string, {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }>(
     APIAction.FETCH_COMMENTS,
-    async (id, {dispatch, extra: api}) => {
+    async (id, {extra: api}) => {
       const { data } = await api.get<Review[]>(`${APIRoute.Comments}/${id}`);
-      dispatch(loadComments(data));
+      return data;
     }
   );
 
 
-export const checkAuthAction = createAsyncThunk<void, undefined, {
+export const checkAuthAction = createAsyncThunk<UserData, undefined, {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }>(
     APIAction.CHECK_AUTH,
-    async (_arg, {dispatch, extra: api}) => {
-      try {
-        const { data } = await api.get<UserData>(APIRoute.Login);
-        dispatch(loadUserData(data));
-
-        dispatch(requireAuthorization(AuthorizationStatus.Auth));
-      } catch {
-        dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-      }
+    async (_arg, {extra: api}) => {
+      const { data } = await api.get<UserData>(APIRoute.Login);
+      return data;
     }
   );
 
@@ -138,7 +122,7 @@ export const updateOfferFavoriteStatusAction = createAsyncThunk<void, Offer, {
     }
   );
 
-export const loginAction = createAsyncThunk<void, AuthData, {
+export const loginAction = createAsyncThunk<UserData, AuthData, {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
@@ -146,10 +130,9 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     APIAction.LOGIN,
     async ({email, password}, {dispatch, extra: api}) => {
       const { data: { token }, data } = await api.post<UserData>(APIRoute.Login, {email, password});
-      dispatch(loadUserData(data));
       saveToken(token);
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
       dispatch(redirectToRoute(PathRoutes.MAIN));
+      return data;
     }
   );
 
@@ -159,20 +142,19 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     extra: AxiosInstance;
   }>(
     APIAction.LOGOUT,
-    async (_arg, {dispatch, extra: api}) => {
+    async (_arg, {extra: api}) => {
       await api.delete(APIRoute.Logout);
       dropToken();
-      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
   );
 
-export const clearErrorAction = createAsyncThunk(
+
+export const clearErrorAction = createAsyncThunk<void, undefined, { dispatch: AppDispatch }>(
   APIAction.CLEAR_ERROR,
-  () => {
-    setTimeout(
-      () => store.dispatch(setError(null)),
-      TIMEOUT_SHOW_ERROR
-    );
+  (_arg, { dispatch }) => {
+    setTimeout(() => {
+      dispatch(setError(null));
+    }, TIMEOUT_SHOW_ERROR);
+    dispatch(redirectToRoute(PathRoutes.NOTFOUND));
   }
 );
-

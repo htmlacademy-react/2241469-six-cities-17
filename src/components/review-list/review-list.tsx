@@ -6,6 +6,8 @@ import { Review, ReviewToSend } from '../../data/types/offer';
 import { useEffect, useState } from 'react';
 import { postCommentAction } from '../../store/api-actions';
 import { store } from '../../store';
+import { getComments } from '../../store/slices/review-slice/review-selector';
+import { getAuthorizationStatus } from '../../store/slices/user-slice/user-selector';
 
 
 function isValidComment(oldComment: object): oldComment is Review {
@@ -32,8 +34,8 @@ function ReviewList(): JSX.Element {
 
   const [comments, setComments] = useState<Review[]>([]);
 
-  const reviews = useAppSelector((state) => state.comments);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const reviews = useAppSelector(getComments);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     setComments(reviews);

@@ -1,19 +1,20 @@
-import { Offer, OfferClick, OfferHover } from '../../data/types/offer';
+import { memo } from 'react';
+import { Offer, OfferHover } from '../../data/types/offer';
 import CityCard from '../city-card/city-card';
 
 
 type Props = {
     offers: Offer[];
     onOfferHover: OfferHover | undefined;
-    onOfferClick: OfferClick;
+
   }
 
-function OfferCardsList({offers, onOfferHover ,onOfferClick}: Props) : JSX.Element{
+function OfferCardsList({offers, onOfferHover }: Props) : JSX.Element{
   return(
     <div className="cities__places-list places__list tabs__content">
       {offers.map(
         (offerItem) => (
-          <CityCard onOfferHover={onOfferHover} onOfferClick={onOfferClick}
+          <CityCard onOfferHover={onOfferHover}
             key={offerItem.id}
             offer={offerItem}
             baseClass={'cities'}
@@ -29,4 +30,4 @@ function OfferCardsList({offers, onOfferHover ,onOfferClick}: Props) : JSX.Eleme
 }
 
 
-export default OfferCardsList;
+export default memo(OfferCardsList);

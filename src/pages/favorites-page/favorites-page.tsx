@@ -1,8 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { Offer, OfferClick } from '../../data/types/offer';
+import { Offer } from '../../data/types/offer';
 import FavoritePageGroup from './favorites-page-group';
 import { useAppSelector } from '../../hooks';
+import { getFavoriteOffers } from '../../store/slices/offer-slice/offer-selector';
 
 
 function GroupByCity(offers: Offer[]): Record<string, Offer[]> {
@@ -16,12 +17,9 @@ function GroupByCity(offers: Offer[]): Record<string, Offer[]> {
   }, {});
 }
 
-type FavoritesPageProps = {
-  onOfferClick: OfferClick;
-}
 
-function FavoritesPage({onOfferClick}: FavoritesPageProps):JSX.Element{
-  const offers = useAppSelector((state) => state.favoriteOffers);
+function FavoritesPage():JSX.Element{
+  const offers = useAppSelector(getFavoriteOffers);
   const favoritesGroups: Record<string, Offer[]> = GroupByCity(offers);
 
   return (
@@ -39,7 +37,7 @@ function FavoritesPage({onOfferClick}: FavoritesPageProps):JSX.Element{
             <ul className="favorites__list">
 
               {Object.entries(favoritesGroups).map(
-                ([city, offerlist]) => <FavoritePageGroup cityName={city} offerlist={offerlist} key={city} onOfferClick={onOfferClick} />
+                ([city, offerlist]) => <FavoritePageGroup cityName={city} offerlist={offerlist} key={city} />
               )}
 
             </ul>

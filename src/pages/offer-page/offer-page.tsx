@@ -6,16 +6,13 @@ import { Helmet } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import Loader from '../../components/loader/loader';
 import Page404 from '../page-404/page-404';
-import { OfferClick } from '../../data/types/offer';
 import { useEffect } from 'react';
 import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearestOfferAction } from '../../store/api-actions';
 import { useParams } from 'react-router-dom';
 import { store } from '../../store';
+import { getCurrentCity } from '../../store/slices/city-slice/city-selector';
+import { getCurrentOffer, getNearestOffers, getOffersDataLoadingStatus } from '../../store/slices/offer-slice/offer-selector';
 
-
-type OfferPageProps = {
-    onOfferClick: OfferClick;
-}
 
 function useOfferData(currentId: string) {
   useEffect(() => {
@@ -26,18 +23,18 @@ function useOfferData(currentId: string) {
 }
 
 
-function OfferPage({onOfferClick}: OfferPageProps):JSX.Element{
+function OfferPage():JSX.Element{
 
   const { id: currentId } = useParams<{ id: string }>();
 
   useOfferData(currentId!);
 
 
-  const currentCity = useAppSelector((state) => state.city);
-  const currentOffer = useAppSelector((state) => state.currentOffer);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const currentCity = useAppSelector(getCurrentCity);
+  const currentOffer = useAppSelector(getCurrentOffer);
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
-  const offersNear = useAppSelector((state) => state.nearestOffers);
+  const offersNear = useAppSelector(getNearestOffers);
 
   if (isOffersDataLoading || !currentOffer) {
     return <Loader />;
@@ -167,7 +164,6 @@ function OfferPage({onOfferClick}: OfferPageProps):JSX.Element{
                   baseClass="near-places"
                   imageSize={{ width: 260, height: 200 }}
                   offer={item}
-                  onOfferClick={onOfferClick}
                   onOfferHover={undefined}
                 />
               ))}
