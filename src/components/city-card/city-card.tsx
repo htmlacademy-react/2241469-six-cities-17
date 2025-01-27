@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Offer, OfferClick, OfferHover } from '../../data/types/offer';
+import { useCallback, useState } from 'react';
+import { Offer, OfferHover } from '../../data/types/offer';
 import { Link } from 'react-router-dom';
 import { PathRoutes } from '../../data/routes';
 
@@ -11,13 +11,18 @@ type Props = {
     height: number | string;
   };
   onOfferHover: OfferHover | undefined;
-  onOfferClick: OfferClick;
 }
 
 
-function CityCard({offer, baseClass, imageSize, onOfferHover,onOfferClick}: Props):JSX.Element{
+function CityCard({offer, baseClass, imageSize, onOfferHover}: Props):JSX.Element{
 
   const [currentOffer, setCurrentOffer] = useState<Offer>({} as Offer);
+  const handleOfferClickHandler = useCallback((curOffer: Offer) => {
+    setCurrentOffer({
+      ...currentOffer,
+      id: curOffer.id,
+    });
+  }, [currentOffer]);
 
   const {id, title, type, price, previewImage, isFavorite, isPremium} = offer;
   return (
@@ -29,7 +34,7 @@ function CityCard({offer, baseClass, imageSize, onOfferHover,onOfferClick}: Prop
           ...currentOffer,
           id: id
         });
-        onOfferClick(offer);
+        handleOfferClickHandler(offer);
       }}
       onMouseEnter={() => {
         if (onOfferHover) {

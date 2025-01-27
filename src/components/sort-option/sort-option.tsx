@@ -1,8 +1,8 @@
-import { store } from '../../store';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Sorts } from '../../const';
-import { changeSort } from '../../store/action';
 import { useState } from 'react';
+import { getActiveSort } from '../../store/slices/offer-slice/offer-selector';
+import { changeSort } from '../../store/slices/offer-slice/offer-slice';
 
 
 function SortOptions(): JSX.Element {
@@ -11,7 +11,7 @@ function SortOptions(): JSX.Element {
 
 
   const dispatch = useAppDispatch();
-  const activeSort = store.getState().sort;
+  const activeSort = useAppSelector(getActiveSort);
 
   const sortFormChangeHandler = (filter: string) => {
     dispatch(changeSort(filter));
