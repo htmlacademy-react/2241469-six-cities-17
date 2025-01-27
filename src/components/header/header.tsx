@@ -5,7 +5,7 @@ import { AuthorizationStatus } from '../../data/authorization';
 import { logoutAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getAuthorizationStatus, getUserData } from '../../store/slices/user-slice/user-selector';
-import { getOffers } from '../../store/slices/offer-slice/offer-selector';
+import { getFavoriteOffers, getOffers } from '../../store/slices/offer-slice/offer-selector';
 
 
 function LoggedUser({ countFavorite }: { countFavorite: number }): JSX.Element {
@@ -16,7 +16,7 @@ function LoggedUser({ countFavorite }: { countFavorite: number }): JSX.Element {
       <li className="header__nav-item user">
         <Link className="header__nav-link header__nav-link--profile" to={PathRoutes.FAVORITES}>
           <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-          <span className="header__user-name user__name">{userData?.email}.</span>
+          {userData && <span className="header__user-name user__name">{userData.email}</span>}
           <span className="header__favorite-count">{countFavorite}</span>
         </Link>
       </li>
@@ -50,7 +50,7 @@ function NotLoggedUser(): JSX.Element {
 
 function Header(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const favoriteOffers = useAppSelector(getOffers).filter((offer) => offer.isFavorite === true);
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
 
   return (
     <header className="header">
