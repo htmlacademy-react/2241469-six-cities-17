@@ -3,8 +3,12 @@ import Header from '../../components/header/header';
 import { Offer } from '../../data/types/offer';
 import FavoritePageGroup from './favorites-page-group';
 import { useAppSelector } from '../../hooks';
-import { getFavoriteOffers } from '../../store/slices/offer-slice/offer-selector';
+import { getFavoriteOffers, getOffersDataLoadingStatus } from '../../store/slices/offer-slice/offer-selector';
+import Loader from '../../components/loader/loader';
+import { fetchFavoriteOffersAction } from '../../store/api-actions';
+import { store } from '../../store';
 
+store.dispatch(fetchFavoriteOffersAction());
 
 function GroupByCity(offers: Offer[]): Record<string, Offer[]> {
   return offers.reduce((grouped: Record<string, Offer[]>, offer) => {
@@ -20,6 +24,13 @@ function GroupByCity(offers: Offer[]): Record<string, Offer[]> {
 
 function FavoritesPage():JSX.Element{
   const offers = useAppSelector(getFavoriteOffers);
+
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
+
+  if (isOffersDataLoading) {
+    return <Loader />;
+  }
+
   const favoritesGroups: Record<string, Offer[]> = GroupByCity(offers);
 
   return (
