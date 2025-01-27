@@ -79,7 +79,7 @@ function CityCard({offer, baseClass, imageSize, onOfferHover}: Props):JSX.Elemen
         </div> : '' }
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`${PathRoutes.OFFER}/${id}`}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={previewImage} width={imageSize.width} height={imageSize.height} alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
