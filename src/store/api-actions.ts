@@ -110,15 +110,17 @@ export const postCommentAction = createAsyncThunk<void, ReviewToSend, {
     }
   );
 
-export const updateOfferFavoriteStatusAction = createAsyncThunk<void, Offer, {
+export const updateOfferFavoriteStatusAction = createAsyncThunk<Offer[], {offer: Offer; favoriteStatus: boolean}, {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }>(
     APIAction.UPDATE_OFFER_FAVORITE_STATUS,
-    async ({isFavorite, id}, {extra: api}) => {
-      const status = isFavorite ? 0 : 1;
-      await api.post(`${APIRoute.Favorite}/${id}/${status}`);
+    async ({offer, favoriteStatus}, {extra: api}) => {
+      const status = favoriteStatus ? 0 : 1;
+      await api.post<Offer[]>(`${APIRoute.Favorite}/${offer.id}/${status}`);
+      const { data } = await api.get<Offer[]>(APIRoute.Offers);
+      return data;
     }
   );
 
@@ -155,6 +157,5 @@ export const clearErrorAction = createAsyncThunk<void, undefined, { dispatch: Ap
     setTimeout(() => {
       dispatch(setError(null));
     }, TIMEOUT_SHOW_ERROR);
-    dispatch(redirectToRoute(PathRoutes.NOTFOUND));
   }
 );

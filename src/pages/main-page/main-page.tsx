@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet-async';
 import { useCallback, useMemo, useState } from 'react';
 import { getOffers, getOffersDataLoadingStatus } from '../../store/slices/offer-slice/offer-selector';
 import { getCurrentCity } from '../../store/slices/city-slice/city-selector';
+import OfferListEmpty from '../../components/offer-list/offer-list-empty';
 
 
 function MainPage():JSX.Element{
@@ -31,6 +32,9 @@ function MainPage():JSX.Element{
   }, []);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
+  if (isOffersDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -46,34 +50,40 @@ function MainPage():JSX.Element{
           </section>
         </div>
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersInCurCity.length} places to stay in {curCity.name}</b>
+          {
+            offersInCurCity.length === 0
+              ? <OfferListEmpty currentCity={curCity}/>
+              :
+              (
+                <div className="cities__places-container container">
+                  <section className="cities__places places">
+                    <h2 className="visually-hidden">Places</h2>
+                    <b className="places__found">{offersInCurCity.length} places to stay in {curCity.name}</b>
 
-              {
-                isOffersDataLoading
-                  ? <Loader />
-                  :
-                  <>
-                    <SortOptions />
-                    <OfferCardsList onOfferHover = {handleChangeActiveCard} offers = {offersInCurCity} />
-                  </>
-              }
+                    {
+                      isOffersDataLoading
+                        ? <Loader />
+                        :
+                        <>
+                          <SortOptions />
+                          <OfferCardsList onOfferHover = {handleChangeActiveCard} offers = {offersInCurCity} />
+                        </>
+                    }
 
-            </section>
-            <div className="cities__right-section">
-              <Map
-                offers={offersInCurCity}
-                city={curCity}
-                currentOffer={selectedOffer}
-                baseClass="cities"
-                size={
-                  { height: '100%' }
-                }
-              />
-            </div>
-          </div>
+                  </section>
+                  <div className="cities__right-section">
+                    <Map
+                      offers={offersInCurCity}
+                      city={curCity}
+                      currentOffer={selectedOffer}
+                      baseClass="cities"
+                      size={
+                        { height: '100%' }
+                      }
+                    />
+                  </div>
+                </div>)
+          }
         </div>
       </main>
     </div>
