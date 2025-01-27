@@ -5,7 +5,7 @@ import { AuthorizationStatus } from '../../data/authorization';
 import { logoutAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getAuthorizationStatus, getUserData } from '../../store/slices/user-slice/user-selector';
-import { getFavoriteOffers, getOffers } from '../../store/slices/offer-slice/offer-selector';
+import { getFavoriteOffers } from '../../store/slices/offer-slice/offer-selector';
 
 
 function LoggedUser({ countFavorite }: { countFavorite: number }): JSX.Element {
