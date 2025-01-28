@@ -2,6 +2,8 @@ import { memo } from 'react';
 import { Offer, OfferHover } from '../../data/types/offer';
 import CityCard from '../city-card/city-card';
 
+const IMAGE_WIDTH = 260;
+const IMAGE_HEIGHT = 200;
 
 type Props = {
     offers: Offer[];
@@ -19,8 +21,8 @@ function OfferCardsList({offers, onOfferHover }: Props) : JSX.Element{
             offer={offerItem}
             baseClass={'cities'}
             imageSize={{
-              width: '260',
-              height: '200'
+              width: IMAGE_WIDTH,
+              height: IMAGE_HEIGHT
             }}
           />
         )

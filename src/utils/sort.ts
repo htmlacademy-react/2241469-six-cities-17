@@ -6,8 +6,8 @@ const priceLowSort = (offerA: Offer, offerB: Offer) =>
   offerA.price - offerB.price;
 const priceHighSort = (offerA: Offer, offerB: Offer) =>
   offerB.price - offerA.price;
-const topRatedSort = (offerA: Offer, OfferB: Offer) =>
-  offerA.rating - OfferB.rating;
+const topRatedSort = (offerA: Offer, offerB: Offer) =>
+  offerA.rating - offerB.rating;
 
 export const sort = {
   [Sorts.POPULAR]: (offers: Offer[]) => offers,
