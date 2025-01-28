@@ -11,7 +11,7 @@ type Props = {
 
   }
 
-function OfferCardsList({offers, onOfferHover }: Props) : JSX.Element{
+function OfferList({offers, onOfferHover }: Props) : JSX.Element{
   return(
     <div className="cities__places-list places__list tabs__content">
       {offers.map(
@@ -32,4 +32,4 @@ function OfferCardsList({offers, onOfferHover }: Props) : JSX.Element{
 }
 
 
-export default memo(OfferCardsList);
+export default memo(OfferList);

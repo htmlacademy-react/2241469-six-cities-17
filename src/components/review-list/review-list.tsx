@@ -1,4 +1,4 @@
-import CommentForm from '../../pages/offer-page/comment-form';
+import CommentForm from '../../pages/comment-form/comment-form';
 import ReviewItem from '../review-item/review-item';
 import { AuthorizationStatus } from '../../data/authorization';
 import { useAppSelector } from '../../hooks';
