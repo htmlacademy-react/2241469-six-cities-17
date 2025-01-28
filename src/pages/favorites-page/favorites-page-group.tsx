@@ -3,6 +3,10 @@ import { PathRoutes } from '../../data/routes';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../data/types/offer';
 
+const IMAGE_WIDTH = 260;
+const IMAGE_HEIGHT = 200;
+
+
 type GroupProps = {
     cityName: string;
     offerlist: Offer[];
@@ -27,8 +31,8 @@ function FavoritePageGroup({cityName, offerlist}:GroupProps): JSX.Element{
                 key={offerItem.id}
                 baseClass={'cities'}
                 imageSize={{
-                  width: '260',
-                  height: '200'
+                  width: IMAGE_WIDTH,
+                  height: IMAGE_HEIGHT
                 }}
                 onOfferHover={undefined}
               />)
