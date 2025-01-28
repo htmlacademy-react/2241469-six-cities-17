@@ -33,3 +33,4 @@ function OfferList({offers, onOfferHover }: Props) : JSX.Element{
 
 
 export default memo(OfferList);
+
