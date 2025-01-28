@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { Offer } from '../../data/types/offer';
-import FavoritePageGroup from './favorites-page-group';
+import FavoritePageGroup from '../favorites-page-group/favorites-page-group';
 import { useAppSelector } from '../../hooks';
 import { getFavoriteOffers, getOffersDataLoadingStatus } from '../../store/slices/offer-slice/offer-selector';
 import Loader from '../../components/loader/loader';

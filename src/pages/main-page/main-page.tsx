@@ -1,4 +1,4 @@
-import OfferCardsList from '../../components/offer-list/offer-list';
+import OfferList from '../../components/offer-list/offer-list';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
@@ -10,7 +10,7 @@ import { Helmet } from 'react-helmet-async';
 import { useCallback, useMemo, useState } from 'react';
 import { getOffers, getOffersDataLoadingStatus } from '../../store/slices/offer-slice/offer-selector';
 import { getCurrentCity } from '../../store/slices/city-slice/city-selector';
-import OfferListEmpty from '../../components/offer-list/offer-list-empty';
+import OfferListEmpty from '../../components/offer-list-empty/offer-list-empty';
 
 
 function MainPage():JSX.Element{
@@ -66,7 +66,7 @@ function MainPage():JSX.Element{
                         :
                         <>
                           <SortOptions />
-                          <OfferCardsList onOfferHover = {handleChangeActiveCard} offers = {offersInCurCity} />
+                          <OfferList onOfferHover = {handleChangeActiveCard} offers = {offersInCurCity} />
                         </>
                     }
 
