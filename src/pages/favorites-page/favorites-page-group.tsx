@@ -36,7 +36,7 @@ function FavoritePageGroup({cityName, offerlist}:GroupProps): JSX.Element{
                 }}
                 onOfferHover={undefined}
               />)
-        )};
+        )}
       </div>
     </li>
   );

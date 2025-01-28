@@ -6,12 +6,15 @@ import { Helmet } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import Loader from '../../components/loader/loader';
 import Page404 from '../page-404/page-404';
-import { useEffect } from 'react';
-import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearestOfferAction } from '../../store/api-actions';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearestOfferAction, updateOfferFavoriteStatusAction } from '../../store/api-actions';
+import { useNavigate, useParams } from 'react-router-dom';
 import { store } from '../../store';
 import { getCurrentCity } from '../../store/slices/city-slice/city-selector';
 import { getCurrentOffer, getNearestOffers, getOffersDataLoadingStatus } from '../../store/slices/offer-slice/offer-selector';
+import { AuthorizationStatus } from '../../data/authorization';
+import { getAuthorizationStatus } from '../../store/slices/user-slice/user-selector';
+import { PathRoutes } from '../../data/routes';
 
 
 function useOfferData(currentId: string) {
@@ -28,13 +31,21 @@ function OfferPage():JSX.Element{
   const { id: currentId } = useParams<{ id: string }>();
 
   useOfferData(currentId!);
-
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const currentCity = useAppSelector(getCurrentCity);
   const currentOffer = useAppSelector(getCurrentOffer);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
   const offersNear = useAppSelector(getNearestOffers);
+
+  const [favoriteStatus, setFavoriteStatus] = useState(currentOffer?.isFavorite);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setFavoriteStatus(currentOffer?.isFavorite);
+  }, [currentOffer]);
 
   if (isOffersDataLoading || !currentOffer) {
     return <Loader />;
@@ -46,6 +57,23 @@ function OfferPage():JSX.Element{
 
 
   const starsPercent = currentOffer.rating * 20;
+
+  const toggleFavoriteStatusHandler = () => {
+    setFavoriteStatus(!favoriteStatus);
+    try {
+      setIsUpdating(true);
+      if (authorizationStatus === AuthorizationStatus.Auth) {
+        store.dispatch(updateOfferFavoriteStatusAction({id: currentOffer.id, favoriteStatus: favoriteStatus ? favoriteStatus : false }));
+      } else {
+        navigate(PathRoutes.LOGIN);
+      }
+    } catch (error) {
+      setFavoriteStatus(!favoriteStatus);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
 
   return (
     <div className="page">
@@ -79,7 +107,10 @@ function OfferPage():JSX.Element{
                 <h1 className="offer__name">
                   {currentOffer.title}
                 </h1>
-                <button className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button">
+                <button className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button"
+                  onClick={toggleFavoriteStatusHandler}
+                  disabled={isUpdating}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
