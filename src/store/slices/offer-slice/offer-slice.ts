@@ -3,7 +3,7 @@ import { Sorts } from '../../../const';
 import { sort } from '../../../utils/sort';
 import { fetchOffersAction, fetchCurrentOfferAction, fetchFavoriteOffersAction, fetchNearestOfferAction, updateOfferFavoriteStatusAction } from '../../api-actions';
 import { OffersData } from '../../../data/types/state';
-import { NameSpace } from '../../../data/const';
+import { MAX_OFFERS_NEARBY, NameSpace } from '../../../data/const';
 
 
 const initialState: OffersData = {
@@ -50,7 +50,7 @@ export const offerData = createSlice({
         state.isOffersDataLoading = false;
       })
       .addCase(fetchNearestOfferAction.fulfilled, (state, action) => {
-        state.nearestOffers = action.payload;
+        state.nearestOffers = action.payload.slice(0,MAX_OFFERS_NEARBY);
       })
       .addCase(updateOfferFavoriteStatusAction.fulfilled, (state, action) => {
         state.offers = action.payload;

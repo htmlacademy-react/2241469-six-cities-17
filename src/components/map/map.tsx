@@ -54,15 +54,25 @@ function Map(props: MapProps): JSX.Element {
             lng: offer.location.longitude,
           },
           {
-            icon:
-              currentOffer && offer.id === currentOffer?.id
-                ? currentCustomIcon
-                : defaultCustomIcon,
+            icon: defaultCustomIcon,
           }
         );
 
         marker.addTo(markerLayer);
       });
+
+      if(currentOffer) {
+        const marker = new Marker(
+          {
+            lat: currentOffer.location.latitude,
+            lng: currentOffer.location.longitude,
+          },
+          {
+            icon: currentCustomIcon
+          }
+        );
+        marker.addTo(markerLayer);
+      }
 
       return () => {
         map.removeLayer(markerLayer);

@@ -7,6 +7,7 @@ import { getFavoriteOffers, getOffersDataLoadingStatus } from '../../store/slice
 import Loader from '../../components/loader/loader';
 import { fetchFavoriteOffersAction } from '../../store/api-actions';
 import { store } from '../../store';
+import FavoritesEmpty from '../../components/favorites-empty/favorites-empty';
 
 store.dispatch(fetchFavoriteOffersAction());
 
@@ -40,26 +41,33 @@ function FavoritesPage():JSX.Element{
         <title>Favorites</title>
       </Helmet>
       <Header/>
+      {
+        offers.length !== 0
+          ? (
+            <>
+              <main className="page__main page__main--favorites">
+                <div className="page__favorites-container container">
+                  <section className="favorites">
+                    <h1 className="favorites__title">Saved listing</h1>
+                    <ul className="favorites__list">
 
-      <main className="page__main page__main--favorites">
-        <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <ul className="favorites__list">
+                      {Object.entries(favoritesGroups).map(
+                        ([city, offerlist]) => <FavoritePageGroup cityName={city} offerlist={offerlist} key={city} />
+                      )}
 
-              {Object.entries(favoritesGroups).map(
-                ([city, offerlist]) => <FavoritePageGroup cityName={city} offerlist={offerlist} key={city} />
-              )}
-
-            </ul>
-          </section>
-        </div>
-      </main>
-      <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
-          <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>
-        </a>
-      </footer>
+                    </ul>
+                  </section>
+                </div>
+              </main>
+              <footer className="footer container">
+                <a className="footer__logo-link" href="main.html">
+                  <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>
+                </a>
+              </footer>
+            </>
+          )
+          : <FavoritesEmpty />
+      }
     </div>
   );
 }

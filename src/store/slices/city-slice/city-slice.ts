@@ -4,7 +4,7 @@ import { City } from '../../../data/types/offer';
 import { CityProcess } from '../../../data/types/state';
 
 const initialState: CityProcess = {
-  city: Cities.PARIS
+  city: Cities.AMSTERDAM
 };
 export const cityProcess = createSlice({
   name: NameSpace.City,

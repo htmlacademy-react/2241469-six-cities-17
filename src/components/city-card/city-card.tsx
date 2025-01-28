@@ -42,7 +42,7 @@ function CityCard({offer, baseClass, imageSize, onOfferHover}: Props):JSX.Elemen
     try {
       if (authorizationStatus === AuthorizationStatus.Auth) {
         setIsUpdating(true);
-        store.dispatch(updateOfferFavoriteStatusAction({offer, favoriteStatus}));
+        store.dispatch(updateOfferFavoriteStatusAction({id: offer.id, favoriteStatus}));
         setFavoriteStatus(!favoriteStatus);
       } else {
         navigate(PathRoutes.LOGIN);
